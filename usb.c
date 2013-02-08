@@ -296,16 +296,16 @@ RESULT usbDataSetup(u8 request) {
         if (dfuUpdateByRequest()) {
             /* successfull state transition, handle the request */
             switch (request) {
-            case(DFU_GETSTATUS):
+            case (DFU_GETSTATUS):
                 CopyRoutine = dfuCopyStatus;
                 break;
-            case(DFU_GETSTATE):
+            case (DFU_GETSTATE):
                 CopyRoutine = dfuCopyState;
                 break;
-            case(DFU_DNLOAD):
+            case (DFU_DNLOAD):
                 CopyRoutine = dfuCopyDNLOAD;
                 break;
-            case(DFU_UPLOAD):
+            case (DFU_UPLOAD):
                 CopyRoutine = dfuCopyUPLOAD;
                 break;
             default:
