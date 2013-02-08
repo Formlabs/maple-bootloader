@@ -42,17 +42,17 @@ void setupUSB(void) {
     SET_REG(RCC_APB2ENR, rwmVal);
 
     // todo, macroize usb_disc pin
-    /* Setup GPIOC Pin 12 as OD out */
+    /* Setup GPIOC Pin 15 as OD out */
     rwmVal  = GET_REG(GPIO_CRH(GPIOC));
-    rwmVal &= 0xFFF0FFFF;
-    rwmVal |= 0x00050000;
-    setPin(GPIOC, 12);
+    rwmVal &= 0x0FFFFFFF;
+    rwmVal |= 0x50000000;
+    setPin(GPIOC, 15);
     SET_REG(GPIO_CRH(GPIOC), rwmVal);
 
     pRCC->APB1ENR |= 0x00800000;
 
     /* initialize the usb application */
-    resetPin(GPIOC, 12);  /* present ourselves to the host */
+    resetPin(GPIOC, 15);  /* present ourselves to the host */
     usbAppInit();
 
 }

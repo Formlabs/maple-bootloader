@@ -32,39 +32,59 @@
  */
 
 #include "common.h"
+#include "bkp.h"
+
+void delay() {
+    u32 c;
+    for(c=0; c < 1000000; c++) {
+        asm volatile("nop");
+    }
+}
 
 int main() {
+    u32 c;
+
     systemReset(); // peripherals but not PC
     setupCLK();
     setupLED();
-    setupUSB();
     setupBUTTON();
+    bkp_init();
+
+    uint16_t val = bkp_read(BOOTLOADER_BKP_REG);
+    if (val == BOOTLOADER_BKP_MAGIC) {
+        bkp_enable_writes();
+        delay();
+        bkp_write(BOOTLOADER_BKP_REG, 0);
+        bkp_disable_writes();
+    } else {
+        // Wait for button pullup to charge capacitance
+        // of wiring leading to button (should be a few
+        // millisecond delay)
+        delay();
+
+        // If button is not pressed
+        if (readPin(BUTTON_BANK, BUTTON)) {
+            // and if user code is valid
+            if (checkUserCode(USER_CODE_FLASH)) {
+                // run user code
+                jumpToUser(USER_CODE_FLASH);
+            }
+        }
+    }
+
+    // otherwise finish initializing and run the bootloader
+    setupUSB();
     setupFLASH();
 
     strobePin(LED_BANK, LED, STARTUP_BLINKS, BLINK_FAST);
 
-    /* wait for host to upload program or halt bootloader */
-    bool no_user_jump = !checkUserCode(USER_CODE_FLASH) && !checkUserCode(USER_CODE_RAM) || readPin(BUTTON_BANK, BUTTON);
-    int delay_count = 0;
-
-    while ((delay_count++ < BOOTLOADER_WAIT)
-            || no_user_jump) {
+    while (1) {
 
         strobePin(LED_BANK, LED, 1, BLINK_SLOW);
 
         if (dfuUploadStarted()) {
             dfuFinishUpload(); // systemHardReset from DFU once done
         }
-    }
-
-    if (checkUserCode(USER_CODE_RAM)) {
-        jumpToUser(USER_CODE_RAM);
-    } else if (checkUserCode(USER_CODE_FLASH)) {
-        jumpToUser(USER_CODE_FLASH);
-    } else {
-        // some sort of fault occurred, hard reset
-        strobePin(LED_BANK, LED, 5, BLINK_FAST);
-        systemHardReset();
     }
 
 }

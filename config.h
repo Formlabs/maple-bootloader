@@ -36,12 +36,14 @@
 #include "common.h"
 
 #define LED_BANK GPIOA
-#define LED      5
+#define LED      3
 #define BLINK_FAST 0x50000
 #define BLINK_SLOW 0x100000
 
+#define STM32_HIGH_DENSITY 1
+
 #define BUTTON_BANK GPIOC
-#define BUTTON      9
+#define BUTTON      1
 
 #define STARTUP_BLINKS 5
 #define BOOTLOADER_WAIT 6
@@ -51,9 +53,12 @@
 #define USER_CODE_FLASH   ((u32)0x08005000)
 #define FLASH_END         ((u32)0x08020000)
 
-#define VEND_ID0 0xAF
-#define VEND_ID1 0x1E
-#define PROD_ID0 0x03
+#define VEND_ID0 0x43
+#define VEND_ID1 0xF0
+#define PROD_ID0 0x04
 #define PROD_ID1 0x00
+
+#define BOOTLOADER_BKP_REG 2
+#define BOOTLOADER_BKP_MAGIC 0xF043
 
 #endif
