@@ -159,8 +159,9 @@ void usbResumeInit(void) {
 void usbResume(RESUME_STATE eResumeSetVal) {
     u16 wCNTR;
 
-    if (eResumeSetVal != RESUME_ESOF)
+    if (eResumeSetVal != RESUME_ESOF) {
         ResumeS.eState = eResumeSetVal;
+    }
 
     switch (ResumeS.eState) {
     case RESUME_EXTERNAL:
@@ -177,8 +178,9 @@ void usbResume(RESUME_STATE eResumeSetVal) {
         break;
     case RESUME_WAIT:
         ResumeS.bESOFcnt--;
-        if (ResumeS.bESOFcnt == 0)
+        if (ResumeS.bESOFcnt == 0) {
             ResumeS.eState = RESUME_START;
+        }
         break;
     case RESUME_START:
         wCNTR = _GetCNTR();
