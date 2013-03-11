@@ -53,10 +53,10 @@
 #define USER_CODE_FLASH   ((u32)0x08005000)
 #define FLASH_END         ((u32)0x08020000)
 
-#define VEND_ID0 0x43
-#define VEND_ID1 0xF0
-#define PROD_ID0 0x04
-#define PROD_ID1 0x00
+#define VEND_ID0 0xD0
+#define VEND_ID1 0x16
+#define PROD_ID0 0xEB
+#define PROD_ID1 0x07
 
 #define BOOTLOADER_BKP_REG 2
 #define BOOTLOADER_BKP_MAGIC 0xF043
