@@ -247,3 +247,8 @@ cscope:
 	rm -rf *.cscope
 	find . -iname "*.[hcs]" | grep -v examples | xargs cscope -R -b
 
+NAME=$(shell git rev-name)
+DATE=$(shell date +%F--%H-%M-%S)
+release: flash
+	@cp build/maple_boot.bin "${HOME}/Dropbox/Formlabs Electronics/Firmware-Software builds/formlabs-bootloader--$(NAME)--$(DATE).bin"
+	@echo "built release $(NAME)--$(DATE)."

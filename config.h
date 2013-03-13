@@ -55,7 +55,7 @@
 
 #define VEND_ID0 0xD0
 #define VEND_ID1 0x16
-#define PROD_ID0 0xEB
+#define PROD_ID0 0xFB
 #define PROD_ID1 0x07
 
 #define BOOTLOADER_BKP_REG 2
